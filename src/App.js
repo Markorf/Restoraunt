@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Layout from "./components/layout";
 import {
@@ -8,8 +8,8 @@ import {
   Redirect
 } from "react-router-dom";
 import HomePage from "./pages/home";
-import AboutPage from "./pages/about";
 import "./App.css";
+const AboutPage = lazy(() => import("./pages/about"));
 
 const theme = createMuiTheme({
   typography: {
@@ -23,11 +23,13 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <Router>
           <Layout>
-            <Switch>
-              <Route exact path="/" component={HomePage} />
-              <Route path="/about" component={AboutPage} />
-              <Redirect to="/" />
-            </Switch>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/about" render={() => <AboutPage />} />
+                <Redirect to="/" />
+              </Switch>
+            </Suspense>
           </Layout>
         </Router>
       </MuiThemeProvider>
