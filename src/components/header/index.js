@@ -1,6 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { observer, useObservable } from "mobx-react-lite";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,9 +11,20 @@ import Info from "@material-ui/icons/Info";
 import Home from "@material-ui/icons/Home";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
-import styles from "./styles";
+import restorauntStore from "../../store/restoraunt";
+import useStyles from "./styles";
 
-function SearchAppBar({ classes }) {
+function SearchAppBar({ history }) {
+  const rStore = useObservable(restorauntStore);
+  const classes = useStyles();
+  const {
+    location: { pathname }
+  } = history;
+  const searchHandler = e => {
+    const val = e.target.value.toLowerCase();
+    rStore.filterText = val;
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -51,26 +61,25 @@ function SearchAppBar({ classes }) {
             </MenuItem>
           </NavLink>
           <div className={classes.grow} />
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          {pathname === "/" && (
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                onChange={searchHandler}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-            />
-          </div>
+          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
 
-SearchAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(SearchAppBar);
+export default observer(SearchAppBar);

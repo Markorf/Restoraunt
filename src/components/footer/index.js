@@ -1,8 +1,8 @@
 import React from "react";
-import { withStyles } from "@material-ui/styles";
-import styles from "./styles";
+import useStyles from "./styles";
 
-function Footer({ classes }) {
+function Footer() {
+  const classes = useStyles();
   return (
     <footer className={classes.root}>
       <p>
@@ -12,4 +12,4 @@ function Footer({ classes }) {
   );
 }
 
-export default withStyles(styles)(Footer);
+export default Footer;

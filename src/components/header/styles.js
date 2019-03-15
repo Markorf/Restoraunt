@@ -1,6 +1,7 @@
+import { makeStyles } from "@material-ui/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 
-export default theme => ({
+export default makeStyles(theme => ({
   root: {
     width: "100%"
   },
@@ -29,6 +30,9 @@ export default theme => ({
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing.unit,
       width: "auto"
+    },
+    "& input": {
+      color: "white"
     }
   },
   searchIcon: {
@@ -38,10 +42,11 @@ export default theme => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    right: 0
   },
   inputRoot: {
-    color: "inherit",
+    color: "white",
     width: "100%"
   },
   inputInput: {
@@ -65,4 +70,4 @@ export default theme => ({
     backgroundColor: "rgba(224, 224, 224, .2)",
     textDecoration: "none"
   }
-});
+}));
