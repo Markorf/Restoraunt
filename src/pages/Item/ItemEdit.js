@@ -40,35 +40,34 @@ function ItemEdit({ classes, rStore }) {
           <Validation minLen={3}>
             <Input
               required
-              id="component-simple"
               value={input.name}
               onChange={handleChange("name")}
             />
           </Validation>
-          <InputLabel htmlFor="component-helper">Price</InputLabel>
+          <InputLabel htmlFor="name">Price</InputLabel>
           <Validation minNum={3}>
             <Input
+              id="name"
               required
               type="number"
-              id="component-helper"
               value={input.price}
               onChange={handleChange("price")}
             />
           </Validation>
-          <InputLabel htmlFor="component-helper">Image link</InputLabel>
+          <InputLabel htmlFor="src">Image link</InputLabel>
           <Validation minLen={5} maxLen={200}>
             <Input
+              id="src"
               required
-              id="component-helper"
               value={input.src}
               onChange={handleChange("src")}
             />
           </Validation>
-          <InputLabel htmlFor="component-helper">Description</InputLabel>
+          <InputLabel htmlFor="desc">Description</InputLabel>
           <Validation minLen={5}>
             <Input
               required
-              id="component-helper"
+              id="desc"
               value={input.description}
               onChange={handleChange("description")}
             />

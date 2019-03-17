@@ -73,10 +73,10 @@ class Restoraunt {
         `/${selectedType}/${data.id}.json`,
         data
       );
+      await this.getItem(data.id);
       runInAction(() => {
         this.isLoading = false;
       });
-      await this.getItem(data.id);
       return res;
     } catch (err) {
       runInAction(() => {

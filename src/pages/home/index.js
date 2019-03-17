@@ -13,9 +13,10 @@ function Home() {
   const rStore = useObservable(restorauntStore);
   const oStore = useObservable(optionsStore);
   const classes = useStyles();
-  const data = localStorage.getItem("selectedType") || oStore.initialType;
+  const selectedType =
+    localStorage.getItem("selectedType") || oStore.initialType;
   useEffect(() => {
-    rStore.getData(data);
+    rStore.getData(selectedType);
   }, [oStore.selectedType]);
 
   const renderItems = () => {

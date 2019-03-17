@@ -37,7 +37,7 @@ function Food({ match }) {
   } else if (view === "delete") {
     SelectedView = (
       <ItemDelete rStore={rStore}>
-        <ItemView ItemView classes={classes} item={rStore.item} />
+        <ItemView classes={classes} item={rStore.item} />
       </ItemDelete>
     );
   }
