@@ -1,15 +1,8 @@
 import { makeStyles } from "@material-ui/styles";
 export default makeStyles(() => ({
-  items: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    width: "90%",
-    margin: "auto",
-    gridGap: 15,
-
+  item: {
     "& img[alt='thumbnail']": {
       height: 300,
-      width: "100%",
       borderRadius: 10,
       cursor: "zoom-in"
     },
@@ -18,12 +11,15 @@ export default makeStyles(() => ({
       width: 500
     },
     "& img": {
-      cursor: "pointer",
-      margin: 10
+      cursor: "pointer"
     }
   },
-  itemLink: {
-    color: "black",
+  back: {
+    textDecoration: "none",
+    display: "flex",
+    justifyContent: "center",
+    marginTop: 10,
+    color: "#3f51b5",
     "&:hover": {
       color: "red",
       transition: "all .3s ease"

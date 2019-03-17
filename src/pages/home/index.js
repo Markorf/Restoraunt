@@ -1,34 +1,41 @@
 import React, { useEffect } from "react";
 import ReactFancyBox from "react-fancybox";
 import "react-fancybox/lib/fancybox.css";
+import { Link } from "react-router-dom";
 import { observer, useObservable } from "mobx-react-lite";
 import Spinner from "../../components/spinner";
 import restorauntStore from "../../store/restoraunt";
+import optionsStore from "../../store/options";
+import SimpleSelect from "../../components/select";
 import useStyles from "./styles";
 
 function Home() {
   const rStore = useObservable(restorauntStore);
+  const oStore = useObservable(optionsStore);
   const classes = useStyles();
   useEffect(() => {
-    rStore.getFoods("/foods.json");
-  }, []);
+    rStore.getData(oStore.selectedType);
+  }, [oStore.selectedType]);
 
-  const renderFoods = () => {
-    const foods = rStore.filteredFoods;
-    if (!foods.length) return <h2>There are no results!</h2>;
+  const renderItems = () => {
+    const items = rStore.filteredStore;
+    if (!items.length) return <h2>There are no results!</h2>;
     return (
-      <div className={classes.foods}>
-        {foods.map(food => (
-          <div key={food.id}>
+      <div className={classes.items}>
+        {items.map(item => (
+          <div key={item.id}>
             <strong>
-              {food.name} : (${food.price})
+              <Link className={classes.itemLink} to={`/item/${item.id}`}>
+                {item.name}
+              </Link>{" "}
+              : (${item.price})
             </strong>
             <ReactFancyBox
-              image={food.src}
-              thumbnail={food.src}
-              alt={`Food-${food.id}`}
+              image={item.src}
+              thumbnail={item.src}
+              alt={`item-${item.id}`}
             />
-            <p>Desc: {food.description}</p>
+            <p>Desc: {item.description}</p>
           </div>
         ))}
       </div>
@@ -36,10 +43,12 @@ function Home() {
   };
 
   if (rStore.isLoading) return <Spinner />;
+
   return (
     <div className="home">
       <h1>Our menu</h1>
-      {renderFoods()}
+      <SimpleSelect small />
+      {renderItems()}
     </div>
   );
 }

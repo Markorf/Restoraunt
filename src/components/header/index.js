@@ -9,6 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import Info from "@material-ui/icons/Info";
 import Home from "@material-ui/icons/Home";
+import Add from "@material-ui/icons/AddCircle";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
 import restorauntStore from "../../store/restoraunt";
@@ -60,7 +61,16 @@ function SearchAppBar({ history }) {
               <p className={classes.white}>About us</p>
             </MenuItem>
           </NavLink>
+          <NavLink activeClassName={classes.active} exact to="/add">
+            <MenuItem>
+              <IconButton color="inherit">
+                <Add color="inherit" />
+              </IconButton>
+              <p className={classes.white}>Add food/drink</p>
+            </MenuItem>
+          </NavLink>
           <div className={classes.grow} />
+
           {pathname === "/" && (
             <div className={classes.search}>
               <div className={classes.searchIcon}>

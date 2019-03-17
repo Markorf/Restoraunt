@@ -11,7 +11,10 @@ import Layout from "./components/layout";
 import Spinner from "./components/spinner";
 import HomePage from "./pages/home";
 import "./App.css";
+
 const AboutPage = lazy(() => import("./pages/about"));
+const ItemPage = lazy(() => import("./pages/item"));
+const AddPage = lazy(() => import("./pages/add"));
 
 const theme = createMuiTheme({
   typography: {
@@ -29,6 +32,8 @@ function App() {
               <Switch>
                 <Route exact path="/" render={() => <HomePage />} />
                 <Route path="/about" render={() => <AboutPage />} />
+                <Route path="/item/:id" render={() => <ItemPage />} />
+                <Route path="/add" render={() => <AddPage />} />
                 <Redirect to="/" />
               </Switch>
             </Suspense>
