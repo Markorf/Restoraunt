@@ -1,5 +1,16 @@
 import { makeStyles } from "@material-ui/styles";
-export default makeStyles(() => ({
+export default makeStyles(theme => ({
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    width: "30%",
+    margin: "2rem auto",
+    "& button": {
+      marginTop: ".3rem"
+    }
+  },
+
   item: {
     "& img[alt='thumbnail']": {
       height: 300,

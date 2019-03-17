@@ -31,20 +31,77 @@ class Restoraunt {
   @action async getItem(itemId) {
     this.isLoading = true;
     const selectedType = localStorage.getItem("selectedType") || "foods";
-    const response = await axiosInstance.get(`/${selectedType}/${itemId}.json`);
-
-    runInAction(() => {
-      this.isLoading = false;
-      this.item = response.data ? response.data : {};
-    });
+    try {
+      const response = await axiosInstance.get(
+        `/${selectedType}/${itemId}.json`
+      );
+      runInAction(() => {
+        this.isLoading = false;
+        this.item = response.data ? { ...response.data, id: itemId } : {};
+      });
+      return response;
+    } catch (err) {
+      runInAction(() => {
+        this.isLoading = false;
+      });
+      return err;
+    }
   }
 
-  @action async addData(type, data) {
+  @action async addData(data) {
     this.isLoading = true;
+    const selectedType = localStorage.getItem("selectedType") || "foods";
     try {
-      const res = await axiosInstance.post(`/${type}.json`, data);
+      const res = await axiosInstance.post(`/${selectedType}.json`, data);
+      runInAction(() => {
+        this.isLoading = false;
+      });
       return res;
     } catch (err) {
+      runInAction(() => {
+        this.isLoading = false;
+      });
+      return err;
+    }
+  }
+
+  @action async editItem(data) {
+    this.isLoading = true;
+    const selectedType = localStorage.getItem("selectedType") || "foods";
+    try {
+      const res = await axiosInstance.put(
+        `/${selectedType}/${data.id}.json`,
+        data
+      );
+      runInAction(() => {
+        this.isLoading = false;
+      });
+      await this.getItem(data.id);
+      return res;
+    } catch (err) {
+      runInAction(() => {
+        this.isLoading = false;
+      });
+      return err;
+    }
+  }
+
+  @action async deleteItem(data) {
+    this.isLoading = true;
+    const selectedType = localStorage.getItem("selectedType") || "foods";
+    try {
+      const res = await axiosInstance.delete(
+        `/${selectedType}/${data.id}.json`
+      );
+
+      runInAction(() => {
+        this.isLoading = false;
+      });
+      return res;
+    } catch (err) {
+      runInAction(() => {
+        this.isLoading = false;
+      });
       return err;
     }
   }

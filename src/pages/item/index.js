@@ -1,44 +1,55 @@
-import React, { useEffect } from "react";
-import { useObservable, observer } from "mobx-react-lite";
+import React, { Fragment, useState, lazy } from "react";
+import { observer } from "mobx-react-lite";
 import { withRouter, Redirect } from "react-router";
-import { Link } from "react-router-dom";
-import BackIcon from "@material-ui/icons/ArrowBack";
-import ReactFancyBox from "react-fancybox";
 import "react-fancybox/lib/fancybox.css";
-import Spinner from "../../components/spinner";
-import restorauntStore from "../../store/restoraunt";
+import BackIcon from "@material-ui/icons/ArrowBack";
+import { Link } from "react-router-dom";
+import Spinner from "../../components/ui/Spinner";
+import ButtonView from "../../components/ui/ButtonView";
+import useItem from "./useItem";
+import ItemView from "./ItemView";
 import useStyles from "./styles";
+const ItemEdit = lazy(() => import("./ItemEdit"));
+const ItemDelete = lazy(() => import("./ItemDelete"));
 
 function Food({ match }) {
   const classes = useStyles();
-  const rStore = useObservable(restorauntStore);
+  const [view, setView] = useState("read");
+
   const {
     params: { id }
   } = match;
-  useEffect(() => {
-    rStore.getItem(id);
-    // mora () => jer ce biti problem pri redirektu
-    return () => (rStore.item = {});
-  }, [id]);
+  const rStore = useItem(id);
+  const isItemEmpty = Object.keys(rStore.item).length === 0;
 
-  if (rStore.isLoading) return <Spinner />;
+  if (rStore.isLoading || isItemEmpty) return <Spinner />;
   if (!rStore.item) return <Redirect to="/" />;
+
+  const clickHandler = viewName => {
+    setView(viewName);
+  };
+  let SelectedView = null;
+
+  if (view === "read") {
+    SelectedView = <ItemView classes={classes} item={rStore.item} />;
+  } else if (view === "edit") {
+    SelectedView = <ItemEdit classes={classes} rStore={rStore} id={id} />;
+  } else if (view === "delete") {
+    SelectedView = (
+      <ItemDelete rStore={rStore}>
+        <ItemView ItemView classes={classes} item={rStore.item} />
+      </ItemDelete>
+    );
+  }
   return (
-    <div className={classes.item}>
+    <Fragment>
       <Link className={classes.back} to="/">
         <BackIcon />
         Go Back
       </Link>
-      <h1>{rStore.item.name}</h1>
-      <ReactFancyBox
-        image={rStore.item.src}
-        thumbnail={rStore.item.src}
-        alt={`item-${rStore.item.id}`}
-      />
-
-      <strong>Description:</strong>
-      <p>{rStore.item.description}</p>
-    </div>
+      {SelectedView}
+      <ButtonView view={view} clickHandler={clickHandler} />
+    </Fragment>
   );
 }
 

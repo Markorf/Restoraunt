@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
+import { useObservable, observer } from "mobx-react-lite";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import { useObservable, observer } from "mobx-react-lite";
-import optionsStore from "../../store/options";
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
+import optionsStore from "../../../store/options";
 import useStyles from "./styles";
 
 function SimpleSelect({ small = false }) {

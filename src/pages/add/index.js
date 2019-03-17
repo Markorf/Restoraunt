@@ -3,11 +3,10 @@ import { Input, Button, TextField } from "@material-ui/core/";
 import { useObservable, observer } from "mobx-react-lite";
 import restorauntStore from "../../store/restoraunt";
 import optionsStore from "../../store/options";
-import Validation from "../../components/validator/Validation";
-import Validator from "../../components/validator";
-import Modal from "../../components/modal";
-import Portal from "../../components/portal";
-import SimpleSelect from "../../components/select";
+import Validation from "../../components/utils/Validator/Validation";
+import Validator from "../../components/utils/Validator";
+import Modal from "../../components/ui/Modal";
+import Select from "../../components/ui/Select";
 import useStyles from "./styles";
 
 function Add() {
@@ -30,7 +29,7 @@ function Add() {
 
   const submitHandler = async e => {
     e.preventDefault();
-    const res = await rStore.addData(oStore.selectedType, state);
+    const res = await rStore.addData(state);
     if (res.message) {
       // ako je doslo do greske
       rStore.showModal(res.message);
@@ -50,9 +49,7 @@ function Add() {
     <div className={classes.root}>
       <h1>Add new items to kitchen</h1>
       {rStore.modalInfo.show && (
-        <Portal>
-          <Modal message={rStore.modalInfo.message}>Message</Modal>
-        </Portal>
+        <Modal message={rStore.modalInfo.message}>Message</Modal>
       )}
       <Validator>
         <form onSubmit={submitHandler}>
@@ -93,7 +90,7 @@ function Add() {
               onChange={inputHandler("description")}
             />
           </Validation>
-          <SimpleSelect />
+          <Select />
           <Button type="submit" color="primary" variant="contained">
             Add to {oStore.selectedType}
           </Button>

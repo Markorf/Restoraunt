@@ -3,18 +3,19 @@ import ReactFancyBox from "react-fancybox";
 import "react-fancybox/lib/fancybox.css";
 import { Link } from "react-router-dom";
 import { observer, useObservable } from "mobx-react-lite";
-import Spinner from "../../components/spinner";
 import restorauntStore from "../../store/restoraunt";
 import optionsStore from "../../store/options";
-import SimpleSelect from "../../components/select";
+import Select from "../../components/ui/Select";
+import Spinner from "../../components/ui/Spinner";
 import useStyles from "./styles";
 
 function Home() {
   const rStore = useObservable(restorauntStore);
   const oStore = useObservable(optionsStore);
   const classes = useStyles();
+  const data = localStorage.getItem("selectedType") || oStore.initialType;
   useEffect(() => {
-    rStore.getData(oStore.selectedType);
+    rStore.getData(data);
   }, [oStore.selectedType]);
 
   const renderItems = () => {
@@ -47,7 +48,7 @@ function Home() {
   return (
     <div className="home">
       <h1>Our menu</h1>
-      <SimpleSelect small />
+      <Select small />
       {renderItems()}
     </div>
   );

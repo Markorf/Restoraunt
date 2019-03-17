@@ -1,20 +1,22 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { useObservable } from "mobx-react-lite";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
-import Layout from "./components/layout";
-import Spinner from "./components/spinner";
-import HomePage from "./pages/home";
+import Layout from "../ui/Layout";
+import Spinner from "../ui/Spinner";
+import HomePage from "../../pages/Home";
+import optionsStore from "../../store/options";
 import "./App.css";
 
-const AboutPage = lazy(() => import("./pages/about"));
-const ItemPage = lazy(() => import("./pages/item"));
-const AddPage = lazy(() => import("./pages/add"));
+const AboutPage = lazy(() => import("../../pages/About"));
+const ItemPage = lazy(() => import("../../pages/Item"));
+const AddPage = lazy(() => import("../../pages/Add"));
 
 const theme = createMuiTheme({
   typography: {
@@ -23,6 +25,12 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const oStore = useObservable(optionsStore);
+  useEffect(() => {
+    const selectedType =
+      localStorage.getItem("selectedType") || oStore.initialType;
+    oStore.setType(selectedType);
+  });
   return (
     <div className="App">
       <ThemeProvider theme={theme}>

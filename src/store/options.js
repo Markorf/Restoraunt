@@ -8,6 +8,7 @@ class Options {
   @observable types = [];
   @observable selectedType = this.initialType;
   @observable isLoading = false;
+
   @action getAvailableTypes = async () => {
     this.isLoading = true;
     const availableTypes = await axiosInstance.get("/options/types.json");

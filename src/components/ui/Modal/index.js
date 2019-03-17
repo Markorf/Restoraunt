@@ -9,7 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { useObservable } from "mobx-react-lite";
-import restorauntStore from "../../store/restoraunt";
+import restorauntStore from "../../../store/restoraunt";
+import Portal from "../../utils/Portal";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -59,21 +60,23 @@ const DialogActions = withStyles(theme => ({
 function CustomizedDialogDemo({ message, children }) {
   const rStore = useObservable(restorauntStore);
   return (
-    <Dialog
-      onClose={rStore.hideModal}
-      aria-labelledby="customized-dialog-title"
-      open={true}
-    >
-      <DialogTitle id="customized-dialog-title">{children}</DialogTitle>
-      <DialogContent>
-        <Typography gutterBottom>{message}</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={rStore.hideModal.bind(rStore)} color="primary">
-          OK
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Portal>
+      <Dialog
+        onClose={rStore.hideModal}
+        aria-labelledby="customized-dialog-title"
+        open={true}
+      >
+        <DialogTitle id="customized-dialog-title">{children}</DialogTitle>
+        <DialogContent>
+          <Typography gutterBottom>{message}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={rStore.hideModal.bind(rStore)} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Portal>
   );
 }
 

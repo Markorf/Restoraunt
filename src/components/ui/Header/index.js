@@ -12,7 +12,7 @@ import Home from "@material-ui/icons/Home";
 import Add from "@material-ui/icons/AddCircle";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
-import restorauntStore from "../../store/restoraunt";
+import restorauntStore from "../../../store/restoraunt";
 import useStyles from "./styles";
 
 function SearchAppBar({ history }) {

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import Header from "../header";
-import Footer from "../footer";
+import Header from "../Header";
+import Footer from "../Footer";
 import useStyles from "./styles";
 
 function Layout({ children, ...rest }) {
