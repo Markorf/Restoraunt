@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { observer, useObservable } from "mobx-react-lite";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -10,13 +10,18 @@ import SearchIcon from "@material-ui/icons/Search";
 import Info from "@material-ui/icons/Info";
 import Home from "@material-ui/icons/Home";
 import Add from "@material-ui/icons/AddCircle";
+import Account from "@material-ui/icons/AccountCircle";
+import Identity from "@material-ui/icons/PermIdentity";
+import PersonPin from "@material-ui/icons/PersonPin";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
 import restorauntStore from "../../store/restoraunt";
+import authStore from "../../store/auth";
 import useStyles from "./styles";
 
 function SearchAppBar({ history }) {
   const rStore = useObservable(restorauntStore);
+  const aStore = useObservable(authStore);
   const classes = useStyles();
   const {
     location: { pathname }
@@ -25,6 +30,51 @@ function SearchAppBar({ history }) {
     const val = e.target.value.toLowerCase();
     rStore.filterText = val;
   };
+
+  let menuItems = (
+    <Fragment>
+      <div className={classes.grow} />
+      <NavLink activeClassName={classes.active} exact to="/register">
+        <MenuItem>
+          <IconButton>
+            <Account color="inherit" />
+          </IconButton>
+          <p className={classes.white}>Register</p>
+        </MenuItem>
+      </NavLink>
+      <NavLink activeClassName={classes.active} exact to="/login">
+        <MenuItem>
+          <IconButton>
+            <Identity color="inherit" />
+          </IconButton>
+          <p className={classes.white}>Login</p>
+        </MenuItem>
+      </NavLink>
+    </Fragment>
+  );
+
+  if (aStore.isAuth) {
+    menuItems = (
+      <Fragment>
+        <NavLink activeClassName={classes.active} exact to="/add">
+          <MenuItem>
+            <IconButton color="inherit">
+              <Add color="inherit" />
+            </IconButton>
+            <p className={classes.white}>Add food/drink</p>
+          </MenuItem>
+        </NavLink>
+        <div className={classes.grow} />
+
+        <MenuItem onClick={() => aStore.logOut()}>
+          <IconButton>
+            <PersonPin color="inherit" />
+          </IconButton>
+          <p className={classes.white}>Logout</p>
+        </MenuItem>
+      </Fragment>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -61,16 +111,7 @@ function SearchAppBar({ history }) {
               <p className={classes.white}>About us</p>
             </MenuItem>
           </NavLink>
-          <NavLink activeClassName={classes.active} exact to="/add">
-            <MenuItem>
-              <IconButton color="inherit">
-                <Add color="inherit" />
-              </IconButton>
-              <p className={classes.white}>Add food/drink</p>
-            </MenuItem>
-          </NavLink>
-          <div className={classes.grow} />
-
+          {menuItems}
           {pathname === "/" && (
             <div className={classes.search}>
               <div className={classes.searchIcon}>

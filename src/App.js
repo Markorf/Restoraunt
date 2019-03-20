@@ -15,6 +15,8 @@ import "./App.css";
 const AboutPage = lazy(() => import("./pages/about"));
 const ItemPage = lazy(() => import("./pages/item"));
 const AddPage = lazy(() => import("./pages/add"));
+const RegisterPage = lazy(() => import("./pages/Register"));
+const LoginPage = lazy(() => import("./pages/Login"));
 
 const theme = createMuiTheme({
   typography: {
@@ -34,6 +36,8 @@ function App() {
                 <Route path="/about" render={() => <AboutPage />} />
                 <Route path="/item/:id" render={() => <ItemPage />} />
                 <Route path="/add" render={() => <AddPage />} />
+                <Route path="/register" render={() => <RegisterPage />} />
+                <Route path="/login" render={() => <LoginPage />} />
                 <Redirect to="/" />
               </Switch>
             </Suspense>
