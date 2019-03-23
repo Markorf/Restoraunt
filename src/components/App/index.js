@@ -12,13 +12,15 @@ import Layout from "../ui/Layout";
 import Spinner from "../ui/Spinner";
 import HomePage from "../../pages/Home";
 import optionsStore from "../../store/options";
+import AuthRoute from "../utils/Routes/AuthRoute";
+import GuestRoute from "../utils/Routes/GuestRoute";
 import "./App.css";
 
-const AboutPage = lazy(() => import("./pages/about"));
-const ItemPage = lazy(() => import("./pages/item"));
-const AddPage = lazy(() => import("./pages/add"));
-const RegisterPage = lazy(() => import("./pages/Register"));
-const LoginPage = lazy(() => import("./pages/Login"));
+const AboutPage = lazy(() => import("../../pages/About"));
+const ItemPage = lazy(() => import("../../pages/Item"));
+const AddPage = lazy(() => import("../../pages/Add"));
+const RegisterPage = lazy(() => import("../../pages/Register"));
+const LoginPage = lazy(() => import("../../pages/Login"));
 
 const theme = createMuiTheme({
   typography: {
@@ -32,7 +34,7 @@ function App() {
     const selectedType =
       localStorage.getItem("selectedType") || oStore.initialType;
     oStore.setType(selectedType);
-  });
+  }, []);
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -43,9 +45,9 @@ function App() {
                 <Route exact path="/" render={() => <HomePage />} />
                 <Route path="/about" render={() => <AboutPage />} />
                 <Route path="/item/:id" render={() => <ItemPage />} />
-                <Route path="/add" render={() => <AddPage />} />
-                <Route path="/register" render={() => <RegisterPage />} />
-                <Route path="/login" render={() => <LoginPage />} />
+                <AuthRoute path="/add" render={() => <AddPage />} />
+                <GuestRoute path="/register" render={() => <RegisterPage />} />
+                <GuestRoute path="/login" render={() => <LoginPage />} />
                 <Redirect to="/" />
               </Switch>
             </Suspense>

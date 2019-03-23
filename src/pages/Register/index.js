@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { useObservable, observer } from "mobx-react-lite";
 import authStore from "../../store/auth";
-import Spinner from "../../components/spinner";
+import Spinner from "../../components/ui/Spinner";
 import useStyles from "./styles";
 
 function Register() {
@@ -27,20 +27,14 @@ function Register() {
   }, [input.repeatedPassword]);
   const handleChange = name => e => {
     const val = e.target.value;
-
     setInput({
       ...input,
       [name]: val
     });
   };
 
-  const handleSubmit = async () => {
-    const res = await aStore.tryRegisterUser(input);
-    if (res.message) {
-      // aStore.showModal(res.message);
-    } else {
-      // aStore.showModal("You are now registered");
-    }
+  const handleSubmit = () => {
+    aStore.tryRegisterUser(input);
     setInput({
       username: "",
       email: "",

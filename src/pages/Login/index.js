@@ -1,9 +1,9 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { useObservable, observer } from "mobx-react-lite";
 import authStore from "../../store/auth";
-import Spinner from "../../components/spinner";
+import Spinner from "../../components/ui/Spinner";
 import useStyles from "./styles";
 
 function Login() {
@@ -12,7 +12,6 @@ function Login() {
     password: ""
   });
   const aStore = useObservable(authStore);
-
   const classes = useStyles();
 
   const handleChange = name => e => {
@@ -24,9 +23,9 @@ function Login() {
     });
   };
 
-  const handleSubmit = async () => {
-    await aStore.tryAuthUser(input);
-
+  const handleSubmit = () => {
+    aStore.tryAuthUser(input);
+    // moze async await sa tim sto mora setInput da ide iznad (ili memory leak!!!)
     setInput({
       email: "",
       password: ""
@@ -59,11 +58,8 @@ function Login() {
           onChange={handleChange("password")}
           name="Password"
           value={input.password}
-          validators={["required", "matchRegexp:^\\S{5,}$"]}
-          errorMessages={[
-            "this field is required",
-            "Please provide stronger password"
-          ]}
+          validators={["required"]}
+          errorMessages={["this field is required"]}
         />
 
         <Button

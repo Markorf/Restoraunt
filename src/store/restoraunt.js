@@ -8,10 +8,6 @@ class Restoraunt {
   @observable item = {};
   @observable filterText = "";
   @observable isLoading = false;
-  @observable modalInfo = {
-    show: false,
-    message: ""
-  };
 
   @action async getData(type) {
     this.isLoading = true;
@@ -51,8 +47,12 @@ class Restoraunt {
   @action async addData(data) {
     this.isLoading = true;
     const selectedType = localStorage.getItem("selectedType") || "foods";
+    const token = localStorage.getItem("idToken");
     try {
-      const res = await axiosInstance.post(`/${selectedType}.json`, data);
+      const res = await axiosInstance.post(
+        `/${selectedType}.json?auth=${token}`,
+        data
+      );
       runInAction(() => {
         this.isLoading = false;
       });
@@ -68,9 +68,10 @@ class Restoraunt {
   @action async editItem(data) {
     this.isLoading = true;
     const selectedType = localStorage.getItem("selectedType") || "foods";
+    const token = localStorage.getItem("idToken");
     try {
       const res = await axiosInstance.put(
-        `/${selectedType}/${data.id}.json`,
+        `/${selectedType}/${data.id}.json?auth=${token}`,
         data
       );
       await this.getItem(data.id);
@@ -89,9 +90,10 @@ class Restoraunt {
   @action async deleteItem(data) {
     this.isLoading = true;
     const selectedType = localStorage.getItem("selectedType") || "foods";
+    const token = localStorage.getItem("idToken");
     try {
       const res = await axiosInstance.delete(
-        `/${selectedType}/${data.id}.json`
+        `/${selectedType}/${data.id}.json?auth=${token}`
       );
 
       runInAction(() => {
@@ -104,20 +106,6 @@ class Restoraunt {
       });
       return err;
     }
-  }
-
-  @action showModal(modalMessage) {
-    this.modalInfo = {
-      show: true,
-      message: modalMessage
-    };
-  }
-
-  @action hideModal() {
-    this.modalInfo = {
-      show: false,
-      message: ""
-    };
   }
 
   @computed get storeCount() {

@@ -1,13 +1,29 @@
 import { observable, action, computed, configure, runInAction } from "mobx";
 import axiosInstance from "../axiosInstance";
-
 import { config } from "../firebaseSetup";
-
 configure({ strict: "always" });
 
 class Auth {
   @observable isLoading = false;
+  @observable _isAuth = null;
   @observable userInfo = {};
+
+  constructor() {
+    const logoutTime = localStorage.getItem("logoutTime");
+    if (!logoutTime) return;
+    if (new Date().getTime() > logoutTime) {
+      this.logOut();
+    }
+  }
+
+  @action logUserIn(userData) {
+    this.isLoading = false;
+    this._isAuth = true;
+    this.userInfo = userData;
+    const logoutTime = new Date().setDate(new Date().getDate() + 7);
+    localStorage.setItem("logoutTime", logoutTime);
+    localStorage.setItem("idToken", userData.idToken);
+  }
 
   @action async tryRegisterUser(userData) {
     this.isLoading = true;
@@ -23,10 +39,7 @@ class Auth {
           returnSecureToken: true
         }
       );
-      runInAction(() => {
-        this.isLoading = false;
-        this.userInfo = res.data;
-      });
+      this.logUserIn(res.data);
       return res;
     } catch (err) {
       runInAction(() => {
@@ -48,10 +61,7 @@ class Auth {
           returnSecureToken: true
         }
       );
-      runInAction(() => {
-        this.isLoading = false;
-        this.userInfo = res.data;
-      });
+      this.logUserIn(res.data);
 
       return res;
     } catch (err) {
@@ -63,11 +73,13 @@ class Auth {
     }
   }
   @action logOut() {
-    this.userInfo = {};
-    console.log("logged out");
+    this._isAuth = false;
+    localStorage.removeItem("idToken");
+    localStorage.removeItem("logoutTime");
   }
+
   @computed get isAuth() {
-    return Object.keys(this.userInfo).length > 0;
+    return this._isAuth || localStorage.getItem("idToken") !== null;
   }
 }
 

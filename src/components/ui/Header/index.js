@@ -5,18 +5,21 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import Info from "@material-ui/icons/Info";
-import Home from "@material-ui/icons/Home";
-import Add from "@material-ui/icons/AddCircle";
-import Account from "@material-ui/icons/AccountCircle";
-import Identity from "@material-ui/icons/PermIdentity";
-import PersonPin from "@material-ui/icons/PersonPin";
+
+import {
+  Menu,
+  Search,
+  Info,
+  Home,
+  Add,
+  AccountCircle,
+  PermIdentity,
+  PersonPin
+} from "@material-ui/icons";
 import { NavLink } from "react-router-dom";
 import { MenuItem } from "@material-ui/core";
-import restorauntStore from "../../store/restoraunt";
-import authStore from "../../store/auth";
+import restorauntStore from "../../../store/restoraunt";
+import authStore from "../../../store/auth";
 import useStyles from "./styles";
 
 function SearchAppBar({ history }) {
@@ -37,7 +40,7 @@ function SearchAppBar({ history }) {
       <NavLink activeClassName={classes.active} exact to="/register">
         <MenuItem>
           <IconButton>
-            <Account color="inherit" />
+            <AccountCircle color="inherit" />
           </IconButton>
           <p className={classes.white}>Register</p>
         </MenuItem>
@@ -45,7 +48,7 @@ function SearchAppBar({ history }) {
       <NavLink activeClassName={classes.active} exact to="/login">
         <MenuItem>
           <IconButton>
-            <Identity color="inherit" />
+            <PermIdentity color="inherit" />
           </IconButton>
           <p className={classes.white}>Login</p>
         </MenuItem>
@@ -85,7 +88,7 @@ function SearchAppBar({ history }) {
             color="inherit"
             aria-label="Open drawer"
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography
             className={classes.title}
@@ -115,7 +118,7 @@ function SearchAppBar({ history }) {
           {pathname === "/" && (
             <div className={classes.search}>
               <div className={classes.searchIcon}>
-                <SearchIcon />
+                <Search />
               </div>
               <InputBase
                 placeholder="Search…"

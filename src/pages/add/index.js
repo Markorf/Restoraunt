@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Input, Button, TextField } from "@material-ui/core/";
-import { useObservable, observer } from "mobx-react-lite";
+import { useObservable } from "mobx-react-lite";
 import restorauntStore from "../../store/restoraunt";
 import optionsStore from "../../store/options";
 import Validation from "../../components/utils/Validator/Validation";
 import Validator from "../../components/utils/Validator";
-import Modal from "../../components/ui/Modal";
 import Select from "../../components/ui/Select";
+import withModal from "../../components/utils/withModal";
 import useStyles from "./styles";
 
-function Add() {
+function Add({ setModal }) {
   const classes = useStyles();
   const rStore = useObservable(restorauntStore);
   const oStore = useObservable(optionsStore);
@@ -31,11 +31,19 @@ function Add() {
     e.preventDefault();
     const res = await rStore.addData(state);
     if (res.message) {
-      // ako je doslo do greske
-      rStore.showModal(res.message);
+      setModal({
+        isOpen: true,
+        message: res.message,
+        title: "Error"
+      });
     } else {
-      rStore.showModal(`${state.name} added to ${oStore.selectedType}!`);
+      setModal({
+        isOpen: true,
+        message: `${state.name} added successfully!`,
+        title: "Success"
+      });
     }
+
     setState({
       name: "",
       price: "",
@@ -48,9 +56,7 @@ function Add() {
   return (
     <div className={classes.root}>
       <h1>Add new items to kitchen</h1>
-      {rStore.modalInfo.show && (
-        <Modal message={rStore.modalInfo.message}>Message</Modal>
-      )}
+
       <Validator>
         <form onSubmit={submitHandler}>
           <Validation minLen={3}>
@@ -100,4 +106,4 @@ function Add() {
   );
 }
 
-export default observer(Add);
+export default withModal(Add);

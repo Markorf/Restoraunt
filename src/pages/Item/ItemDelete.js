@@ -1,24 +1,29 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import Modal from "../../components/ui/Modal";
 
-function ItemDelete({ rStore, children, history }) {
+function ItemDelete({ rStore, setModal, history, children }) {
   const deleteItem = async () => {
     const res = await rStore.deleteItem(rStore.item);
     if (res.message) {
-      // ako je doslo do greske
-      rStore.showModal(res.message);
+      setModal({
+        isOpen: true,
+        message: res.message,
+        title: "Error"
+      });
     } else {
-      history.push("/");
+      setModal({
+        isOpen: true,
+        message: `${rStore.item.name} deleted successfully!`,
+        title: "Success"
+      });
     }
+    setTimeout(() => {
+      history.push("/");
+    }, 1500);
   };
   return (
     <div>
-      {rStore.modalInfo.show && (
-        <Modal message={rStore.modalInfo.message}>Message</Modal>
-      )}
       <h4>Are you sure you want to delete {rStore.item.name}?</h4>
       {children}
       <Button variant="contained" color="secondary" onClick={deleteItem}>
@@ -27,4 +32,4 @@ function ItemDelete({ rStore, children, history }) {
     </div>
   );
 }
-export default observer(withRouter(ItemDelete));
+export default withRouter(ItemDelete);

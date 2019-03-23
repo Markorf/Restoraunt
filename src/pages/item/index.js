@@ -1,20 +1,23 @@
 import React, { Fragment, useState, lazy } from "react";
-import { observer } from "mobx-react-lite";
+import { observer, useObservable } from "mobx-react-lite";
 import { withRouter, Redirect } from "react-router";
 import "react-fancybox/lib/fancybox.css";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/ui/Spinner";
 import ButtonView from "../../components/ui/ButtonView";
+import withModal from "../../components/utils/withModal";
 import useItem from "./useItem";
 import ItemView from "./ItemView";
 import useStyles from "./styles";
+import authStore from "../../store/auth";
 const ItemEdit = lazy(() => import("./ItemEdit"));
 const ItemDelete = lazy(() => import("./ItemDelete"));
 
-function Food({ match }) {
+function Food({ match, setModal }) {
   const classes = useStyles();
   const [view, setView] = useState("read");
+  const aStore = useObservable(authStore);
 
   const {
     params: { id }
@@ -33,10 +36,12 @@ function Food({ match }) {
   if (view === "read") {
     SelectedView = <ItemView classes={classes} item={rStore.item} />;
   } else if (view === "edit") {
-    SelectedView = <ItemEdit classes={classes} rStore={rStore} id={id} />;
+    SelectedView = (
+      <ItemEdit classes={classes} rStore={rStore} id={id} setModal={setModal} />
+    );
   } else if (view === "delete") {
     SelectedView = (
-      <ItemDelete rStore={rStore}>
+      <ItemDelete rStore={rStore} setModal={setModal}>
         <ItemView classes={classes} item={rStore.item} />
       </ItemDelete>
     );
@@ -48,9 +53,9 @@ function Food({ match }) {
         Go Back
       </Link>
       {SelectedView}
-      <ButtonView view={view} clickHandler={clickHandler} />
+      {aStore.isAuth && <ButtonView view={view} clickHandler={clickHandler} />}
     </Fragment>
   );
 }
 
-export default withRouter(observer(Food));
+export default withRouter(withModal(observer(Food)));

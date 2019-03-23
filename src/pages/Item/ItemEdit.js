@@ -3,9 +3,8 @@ import { Input, Button, InputLabel } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import Validator from "../../components/utils/Validator";
 import Validation from "../../components/utils/Validator/Validation";
-import Modal from "../../components/ui/Modal";
 
-function ItemEdit({ classes, rStore }) {
+function ItemEdit({ classes, rStore, setModal }) {
   const [input, setInput] = useState({
     ...rStore.item
   });
@@ -22,18 +21,22 @@ function ItemEdit({ classes, rStore }) {
     e.preventDefault();
     const res = await rStore.editItem(input);
     if (res.message) {
-      // ako je doslo do greske
-      rStore.showModal(res.message);
+      setModal({
+        isOpen: true,
+        message: res.message,
+        title: "Error"
+      });
     } else {
-      rStore.showModal(`${input.name} edited!`);
+      setModal({
+        isOpen: true,
+        message: `${rStore.item.name} edited successfully!`,
+        title: "Success"
+      });
     }
   };
 
   return (
     <Fragment>
-      {rStore.modalInfo.show && (
-        <Modal message={rStore.modalInfo.message}>Message</Modal>
-      )}
       <Validator>
         <form onSubmit={submitHandler} className={classes.container}>
           <InputLabel htmlFor="component-simple">Name</InputLabel>
