@@ -4,11 +4,11 @@ import Header from "../Header";
 import Footer from "../Footer";
 import useStyles from "./styles";
 
-function Layout({ children, history }) {
+function Layout({ children, ...rest }) {
   const classes = useStyles();
   return (
     <Fragment>
-      <Header history={history} />
+      <Header {...rest} />
       <div className={classes.content}>{children}</div>
       <Footer />
     </Fragment>
