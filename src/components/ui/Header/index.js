@@ -5,7 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-
 import {
   Menu,
   Search,
@@ -34,10 +33,27 @@ function SearchAppBar({ history }) {
     rStore.filterText = val;
   };
 
+  const searchMenu =
+    pathname === "/" ? (
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <Search />
+        </div>
+        <InputBase
+          placeholder="Search…"
+          onChange={searchHandler}
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput
+          }}
+        />
+      </div>
+    ) : null;
+
   let menuItems = (
     <Fragment>
       <div className={classes.grow} />
-      <NavLink activeClassName={classes.active} exact to="/register">
+      <NavLink activeClassName={classes.active} to="/register">
         <MenuItem>
           <IconButton>
             <AccountCircle color="inherit" />
@@ -45,7 +61,7 @@ function SearchAppBar({ history }) {
           <p className={classes.white}>Register</p>
         </MenuItem>
       </NavLink>
-      <NavLink activeClassName={classes.active} exact to="/login">
+      <NavLink activeClassName={classes.active} to="/login">
         <MenuItem>
           <IconButton>
             <PermIdentity color="inherit" />
@@ -59,7 +75,7 @@ function SearchAppBar({ history }) {
   if (aStore.isAuth) {
     menuItems = (
       <Fragment>
-        <NavLink activeClassName={classes.active} exact to="/add">
+        <NavLink activeClassName={classes.active} to="/add">
           <MenuItem>
             <IconButton color="inherit">
               <Add color="inherit" />
@@ -106,7 +122,7 @@ function SearchAppBar({ history }) {
               <p className={classes.white}>Home</p>
             </MenuItem>
           </NavLink>
-          <NavLink activeClassName={classes.active} exact to="/about">
+          <NavLink activeClassName={classes.active} to="/about">
             <MenuItem>
               <IconButton color="inherit">
                 <Info color="inherit" />
@@ -115,21 +131,7 @@ function SearchAppBar({ history }) {
             </MenuItem>
           </NavLink>
           {menuItems}
-          {pathname === "/" && (
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <Search />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                onChange={searchHandler}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-              />
-            </div>
-          )}
+          {searchMenu}
         </Toolbar>
       </AppBar>
     </div>

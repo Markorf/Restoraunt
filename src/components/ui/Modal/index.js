@@ -61,7 +61,7 @@ function CustomizedDialogDemo({ title, children }) {
     <Dialog
       onClose={() => close(true)}
       aria-labelledby="customized-dialog-title"
-      open={true}
+      open
     >
       <DialogTitle id="customized-dialog-title">{title}</DialogTitle>
       <DialogContent>

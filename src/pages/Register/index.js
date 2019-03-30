@@ -15,8 +15,8 @@ function Register() {
     repeatedPassword: ""
   });
   const aStore = useObservable(authStore);
-
   const classes = useStyles();
+
   useEffect(() => {
     ValidatorForm.addValidationRule("isPasswordMatch", value => {
       if (value !== input.password) {
@@ -107,12 +107,7 @@ function Register() {
             "Your passwords are not matched"
           ]}
         />
-        <Button
-          className={classes.buttonRoot}
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
+        <Button variant="contained" color="primary" type="submit">
           Register
         </Button>
       </ValidatorForm>

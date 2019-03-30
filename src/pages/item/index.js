@@ -14,7 +14,7 @@ import authStore from "../../store/auth";
 const ItemEdit = lazy(() => import("./ItemEdit"));
 const ItemDelete = lazy(() => import("./ItemDelete"));
 
-function Food({ match, setModal }) {
+function Item({ match, setModal }) {
   const classes = useStyles();
   const [view, setView] = useState("read");
   const aStore = useObservable(authStore);
@@ -58,4 +58,4 @@ function Food({ match, setModal }) {
   );
 }
 
-export default withRouter(withModal(observer(Food)));
+export default withRouter(withModal(observer(Item)));

@@ -1,7 +1,7 @@
 import React from "react";
-import aboutImg from "../../assets/images/about.jpg";
 import ReactFancyBox from "react-fancybox";
 import "react-fancybox/lib/fancybox.css";
+import aboutImg from "../../assets/images/about.jpg";
 import useStyles from "./styles";
 
 function About() {

@@ -39,18 +39,19 @@ function ItemEdit({ classes, rStore, setModal }) {
     <Fragment>
       <Validator>
         <form onSubmit={submitHandler} className={classes.container}>
-          <InputLabel htmlFor="component-simple">Name</InputLabel>
+          <InputLabel htmlFor="name">Name</InputLabel>
           <Validation minLen={3}>
             <Input
+              id="name"
               required
               value={input.name}
               onChange={handleChange("name")}
             />
           </Validation>
-          <InputLabel htmlFor="name">Price</InputLabel>
+          <InputLabel htmlFor="price">Price</InputLabel>
           <Validation minNum={3}>
             <Input
-              id="name"
+              id="price"
               required
               type="number"
               value={input.price}

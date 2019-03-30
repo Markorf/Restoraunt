@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button, TextField } from "@material-ui/core/";
-import { useObservable } from "mobx-react-lite";
+import { useObservable, observer } from "mobx-react-lite";
 import restorauntStore from "../../store/restoraunt";
 import optionsStore from "../../store/options";
 import Validation from "../../components/utils/Validator/Validation";
@@ -106,4 +106,4 @@ function Add({ setModal }) {
   );
 }
 
-export default withModal(Add);
+export default withModal(observer(Add));
